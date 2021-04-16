@@ -37,8 +37,8 @@ def trans(src):
 def doi2info(doi, paper_count=5, citaions = False):
     # doiで論文指定
     # paper_countで取得する関連研究の数を指定
-    # citaions=False で「その」論文「を」引用している論文を表示
-    # citaions=True  で「この」論文「が」引用している論文を表示
+    # citaions=True  で「その」論文「を」引用している論文を表示
+    # citaions=False で「この」論文「が」引用している論文を表示
 
     papers = []
 
