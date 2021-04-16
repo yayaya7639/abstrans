@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block header %}
+
+{% endblock header %}
+
+{% block content %}
+    <!-- doi検索フォーム　-->
+    <form action="{% url 'abstrans' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+    <div class="form-group row">
+            <label for="model" class="col-sm-1 col-form-label">doi</label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control sbc_field" name="doi" placeholder="doiを入れてEnter！！"/>
+    </div>
+
+    <!-- responseの表示　-->
+    {% for paper in papers %}
+        <p>{{ paper.doi }}</p>
+        <p>{{ paper.inf_cnt }}</p>
+        <p>{{ paper.url }}</p>
+        <p>{{ paper.year }}</p>
+        <p>{{ paper.arxiv }}</p>
+        {% for author in paper.authors %}
+            {{ author.name }}
+        {% endfor %}
+        <p></p>
+        {% for topic in paper.topics %}
+            {{ topic.topic }}
+        {% endfor %}
+        <p></p>
+        <p>{{ paper.title_en }}</p>
+        <p>{{ paper.title_ja }}</p>
+        <p>{{ paper.abst_en }}</p>
+        <p>{{ paper.abst_ja }}</p>
+
+    {% endfor %}
+{% endblock content %}
+
+
