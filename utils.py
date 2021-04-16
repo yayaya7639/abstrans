@@ -6,6 +6,12 @@ def print_paper(paper):
     print('influentialCitationCount: ', end = '')
     print(paper['inf_cnt'])
     print('url: ', paper['url'])
+    print('year: ', str(paper['year']))
+    print('arxiv: ', paper['arxiv'])
+
+    print('authors: ', end = '')
+    for author in paper['authors']:
+        print(author['name'], end=', ')
     print()
     print('topics: ', end='')
     for topic in paper['topics']:
@@ -26,9 +32,7 @@ def print_paper(paper):
 def trans(src):
     if src == None:
         return None
-    translator = Translator()
-    tr = Translator()
-    return tr.translate(src, src="en", dest='ja').text
+    return Translator().translate(src, src="en", dest='ja').text
 
 def doi2info(doi, paper_count=5, citaions = False):
     # doiで論文指定
@@ -52,7 +56,10 @@ def doi2info(doi, paper_count=5, citaions = False):
         'doi'     : paper['doi'],
         'url'     : paper['url'],
         'inf_cnt' : paper['influentialCitationCount'],
-        'topics'  : paper['topics']
+        'topics'  : paper['topics'],
+        'authors' : paper['authors'],
+        'year'    : paper['year'],
+        'arxiv'   : paper['arxivId']
     })
     if citaions:
         key = 'citations'
@@ -100,7 +107,10 @@ def doi2info(doi, paper_count=5, citaions = False):
             'doi'     : paper['doi'],
             'url'     : paper['url'],
             'inf_cnt' : paper['influentialCitationCount'],
-            'topics'  : paper['topics']
+            'topics'  : paper['topics'],
+            'authors' : paper['authors'],
+            'year'    : paper['year'],
+            'arxiv'   : paper['arxivId']
         })
     
     return papers
@@ -110,3 +120,6 @@ if __name__ == "__main__":
 
     for paper in papers:
         print_paper(paper)
+
+    print('paper.keys()')
+    print(papers[0].keys())
