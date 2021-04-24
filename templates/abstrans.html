@@ -1,40 +1,62 @@
 {% extends 'base.html' %}
 
-{% block header %}
+<!-- CSSスタイルシートの読み込み　-->
+{% load static %}
+{% block customcss %}
+<!-- Custom styles for this template -->
+<link href="{% static 'style.css' %}" rel="stylesheet">
+{% endblock customcss %}
 
+{% block header %}
+<div class="bg-light p-3 p-sm-5 mb-4 border-top">
+    <div class="container">
+        <h1 class="display-4">ABSTRANS</h1>
+        <p class="lead">TOP画面です</p>
+        <hr class="my-4">
+
+        <!-- doi検索フォーム　-->
+        <form action="{% url 'abstrans' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+            <div class="form-group row">
+                <label for="model" class="col-sm-1 col-form-label">doi</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control sbc_field" name="doi" placeholder="doiを入れてEnter！！" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock header %}
 
 {% block content %}
-    <!-- doi検索フォーム　-->
-    <form action="{% url 'abstrans' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
-    <div class="form-group row">
-            <label for="model" class="col-sm-1 col-form-label">doi</label>
-            <div class="col-sm-3">
-              <input type="text" class="form-control sbc_field" name="doi" placeholder="doiを入れてEnter！！"/>
-    </div>
 
-    <!-- responseの表示　-->
-    {% for paper in papers %}
-        <p>{{ paper.doi }}</p>
-        <p>{{ paper.inf_cnt }}</p>
-        <p>{{ paper.url }}</p>
-        <p>{{ paper.year }}</p>
-        <p>{{ paper.arxiv }}</p>
-        {% for author in paper.authors %}
-            {{ author.name }}
-        {% endfor %}
-        <p></p>
-        {% for topic in paper.topics %}
-            {{ topic.topic }}
-        {% endfor %}
-        <p></p>
-        <p>{{ paper.title_en }}</p>
-        <p>{{ paper.title_ja }}</p>
-        <p>{{ paper.abst_en }}</p>
-        <a href= {{ paper.abst_deepl }}>DeepLで翻訳</a>
-        <p>{{ paper.abst_ja }}</p>
+<!-- responseの表示　-->
+{% for paper in papers %}
+<div class="container-lg">
+    doi: {{ paper.doi }}<br>
 
+    <!-- タイトル　-->
+    <span class="sample12">{{ paper.title_en }}</span><br>
+    {{ paper.title_ja }}<br>
+
+    <!-- 著者　-->
+    {% for author in paper.authors %}
+    {{ author.name }}
     {% endfor %}
+    Published: {{ paper.year }}
+    <br>
+
+    <p></p>
+    <!-- アブスト　-->
+    <span class="sample11">abstract</span><br>
+    {{ paper.abst_en }}
+    <p></p>
+    <span class="sample11">translated by google翻訳</span><br>
+    {{ paper.abst_ja }}<br>
+    <p></p>
+    <a class="btn btn-primary" href={{ paper.abst_deepl }} role="button">DeepLで翻訳</a>
+    <a class="btn btn-primary" href={{ paper.url }} role="button">view on semantic scholar</a>
+    <p></p>
+    <hr class="my-4">
+</div>
+{% endfor %}
 {% endblock content %}
-
-

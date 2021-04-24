@@ -1,21 +1,34 @@
 <!--　スタート画面　&　POST requestを送る　-->
 
 {% extends 'base.html' %}
+{% load static %}
+
+{% block customcss %}
+<!-- Custom styles for this template -->
+<!--<link href="{% static 'style.css' %}" rel="stylesheet">
+-->
+{% endblock customcss %}
 
 {% block header %}
-
 
 {% endblock header %}
 
 {% block content %}
+<div class="bg-light p-3 p-sm-5 mb-4 border-top">
+  <div class="container">
+    <h1 class="display-4">ABSTRANS</h1>
+    <p class="lead">TOP画面です</p>
+    <hr class="my-4">
+
     <!-- doi検索フォーム　-->
     <form action="{% url 'abstrans' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
-    <div class="form-group row">
-            <label for="model" class="col-sm-1 col-form-label">doi</label>
-            <div class="col-sm-3">
-              <input type="text" class="form-control sbc_field" name="doi" placeholder="doiを入れてEnter！！"/>
-    </div>
-
+      <div class="form-group row">
+        <label for="model" class="col-sm-1 col-form-label">doi</label>
+        <div class="col-sm-3">
+          <input type="text" class="form-control sbc_field" name="doi" placeholder="doiを入れてEnter！！" />
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
 {% endblock content %}
-
-
