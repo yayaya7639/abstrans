@@ -33,8 +33,12 @@ def print_paper(paper):
 def trans(src):
     if src == None:
         return None
-    return get_translated_text('en', 'ja', src)
+    rtn = get_translated_text('en', 'ja', src)
+    #return get_translated_text('en', 'ja', src)
     return Translator().translate(src, src="en", dest='ja').text
+def make_deepl_request(text):
+    url = 'https://www.deepl.com/translator#en/ja/' + text
+    return url
 
 def doi2info(doi, paper_count=5, citaions = False):
     # doiで論文指定
@@ -118,6 +122,7 @@ def doi2info(doi, paper_count=5, citaions = False):
     return papers
 
 if __name__ == "__main__":
+    print(make_deepl_request('I live in Paris.'))
     papers = doi2info('10.1109/cvpr.2016.90')
 
     for paper in papers:
