@@ -2,6 +2,8 @@ from googletrans import Translator
 import semanticscholar as sch
 from deepl import get_translated_text
 import urllib
+import urllib.request
+from bs4 import BeautifulSoup
 
 def print_paper(paper):
     print('doi: ', paper['doi'])
@@ -126,11 +128,22 @@ def doi2info(doi, paper_count=5, citaions = False):
     return papers
 
 if __name__ == "__main__":
-    print(make_deepl_request('I live in Paris.'))
-    papers = doi2info('10.1109/cvpr.2016.90')
 
-    for paper in papers:
-        print_paper(paper)
+    url = 'https://www.semanticscholar.org/paper/Multi-step-short-term-wind-speed-forecasting-based-Fu-Wang/9c37dec8a5764ebc5be897adfd498acb41acc323'
+    req = urllib.request.Request(url)
+    with urllib.request.urlopen(req) as res:
+        body = str(res.read())
+    point = body.find("citation_pdf_url")
+    doi = body[point: point+1000].split("\"")[2]
+    doi = doi[16:]
+    print(doi)
+    paper = sch.paper('10.1016/J.ENCONMAN.2019.02.086', timeout=10)
+    if len(paper) == 0:
+        print(paper)
+    # papers = doi2info('10.1109/cvpr.2016.90')
 
-    print('paper.keys()')
-    print(papers[0].keys())
+    # for paper in papers:
+    #     print_paper(paper)
+
+    # print('paper.keys()')
+    # print(papers[0].keys())

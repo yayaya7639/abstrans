@@ -16,16 +16,27 @@ def make_deepl_request(text):
     url = 'https://www.deepl.com/translator#en/ja/' + enc
     return url
 
+def url2doi(url):
+    req = urllib.request.Request(url)
+    with urllib.request.urlopen(req) as res:
+        body = str(res.read())
+    point = body.find("citation_pdf_url")
+    doi = body[point: point+1000].split("\"")[2]
+    doi = doi[16:]
+    return doi
 
 def doi2info(doi, paper_count=5, citaions=True):
     # doiで論文指定
     # paper_countで取得する関連研究の数を指定
     # citaions=True  で、この論文「を」引用している論文を表示
     # citaions=False で、この論文「が」引用している論文を表示
-
+    if 'http' in doi:
+        doi = url2doi(doi)
     papers = []
 
     paper = sch.paper(doi, timeout=10)
+    if len(paper) == 0:
+        return None
     title_en = paper['title']
     title_ja = trans(title_en)
     abst_en = paper['abstract']
@@ -103,7 +114,7 @@ def doi2info(doi, paper_count=5, citaions=True):
 # ホーム画面
 def home(request):
     print("home OK")
-    return render(request, 'index.html')
+    return render(request, 'index.html', {'msg': 'TOP画面です'})
 
 
 def abstrans(request):
@@ -115,5 +126,8 @@ def abstrans(request):
         doi = request.POST['doi']
 
     papers = doi2info(doi)
+
+    if papers == None:
+        return render(request, 'index.html', {'msg': '指定されたDOI，またはURLが見つかりません'})
 
     return render(request, 'abstrans.html', {'papers': papers})
