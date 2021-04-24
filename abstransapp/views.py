@@ -1,6 +1,7 @@
 from googletrans import Translator
 import semanticscholar as sch
 from django.shortcuts import render
+import urllib
 
 # Create your views here.
 
@@ -9,6 +10,11 @@ def trans(src):
     if src == None:
         return None
     return Translator().translate(src, src="en", dest='ja').text
+
+def make_deepl_request(text):
+    enc = urllib.parse.quote(text)
+    url = 'https://www.deepl.com/translator#en/ja/' + enc
+    return url
 
 
 def doi2info(doi, paper_count=5, citaions=True):
@@ -28,7 +34,8 @@ def doi2info(doi, paper_count=5, citaions=True):
     papers.append({
         'title_en': title_en,
         'title_ja': title_ja,
-        'abst_en': title_en,
+        'abst_en': abst_en,
+        'abst_deepl': make_deepl_request(abst_en),
         'abst_ja': abst_ja,
         'doi': paper['doi'],
         'url': paper['url'],
@@ -79,6 +86,7 @@ def doi2info(doi, paper_count=5, citaions=True):
             'title_en': paper['title'],
             'title_ja': title_ja,
             'abst_en': paper['abstract'],
+            'abst_deepl': make_deepl_request(abst_en),
             'abst_ja': abst_ja,
             'doi': paper['doi'],
             'url': paper['url'],
@@ -88,6 +96,7 @@ def doi2info(doi, paper_count=5, citaions=True):
             'year': paper['year'],
             'arxiv': paper['arxivId']
         })
+        print(make_deepl_request(abst_en))
 
     return papers
 

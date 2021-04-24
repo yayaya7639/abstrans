@@ -1,6 +1,7 @@
 from googletrans import Translator
 import semanticscholar as sch
 from deepl import get_translated_text
+import urllib
 
 def print_paper(paper):
     print('doi: ', paper['doi'])
@@ -37,7 +38,8 @@ def trans(src):
     #return get_translated_text('en', 'ja', src)
     return Translator().translate(src, src="en", dest='ja').text
 def make_deepl_request(text):
-    url = 'https://www.deepl.com/translator#en/ja/' + text
+    enc = urllib.parse.quote(text)
+    url = 'https://www.deepl.com/translator#en/ja/' + enc
     return url
 
 def doi2info(doi, paper_count=5, citaions = False):
@@ -57,7 +59,8 @@ def doi2info(doi, paper_count=5, citaions = False):
     papers.append({
         'title_en': title_en,
         'title_ja': title_ja,
-        'abst_en' : title_en,
+        'abst_en' : abst_en,
+        'abst_deepl': make_deepl_request(abst_en),
         'abst_ja' : abst_ja,
         'doi'     : paper['doi'],
         'url'     : paper['url'],
@@ -109,6 +112,7 @@ def doi2info(doi, paper_count=5, citaions = False):
             'title_en': paper['title'],
             'title_ja': title_ja,
             'abst_en' : paper['abstract'],
+            'abst_deepl': make_deepl_request(abst_en),
             'abst_ja' : abst_ja,
             'doi'     : paper['doi'],
             'url'     : paper['url'],
