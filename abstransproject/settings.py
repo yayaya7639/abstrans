@@ -125,3 +125,11 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATICFILES_DIRS = [str(BASE_DIR / 'static')]
+
+# キャッシュの設定
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'my_cache_table',
+    }
+}

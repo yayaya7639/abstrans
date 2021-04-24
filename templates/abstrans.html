@@ -38,9 +38,11 @@
     {{ paper.title_ja }}<br>
 
     <!-- 著者　-->
+    Authors:
     {% for author in paper.authors %}
     {{ author.name }}
     {% endfor %}
+    <br>
     Published: {{ paper.year }}
     <br>
 
@@ -53,7 +55,7 @@
     {{ paper.abst_ja }}<br>
     <p></p>
     <a class="btn btn-primary" href={{ paper.abst_deepl }} role="button">DeepLで翻訳</a>
-    <a class="btn btn-primary" href={{ paper.url }} role="button">view on semantic scholar</a>
+    <a class="btn btn-primary" href={{ paper.url }} role="button">Semantic Scholarで開く</a>
     <p></p>
     <hr class="my-4">
 </div>

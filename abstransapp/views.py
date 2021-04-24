@@ -3,7 +3,6 @@ import semanticscholar as sch
 from django.shortcuts import render, redirect
 import urllib
 import time
-
 # Create your views here.
 
 
@@ -128,23 +127,18 @@ def search(request):
 
     return redirect('abstrans', doi)
 
+
 def abstrans(request, doi):
     print('abstrans OK')
 
-    # キャッシュで本当に早くなるのか検証
+    # APIの呼び出し時間計測
     start = time.perf_counter()
 
     """
     doi = '10.1109/cvpr.2016.90'
-
-    if request.POST['doi']:
-        doi = request.POST['doi']
     """
     papers = doi2info(doi)
 
-    if papers == None:
-        return render(request, 'index.html', {'msg': '指定されたDOI，またはURLが見つかりません'})
-    
     end = time.perf_counter()
     print(f"API処理時間: {end - start:.3f} s.")
 
