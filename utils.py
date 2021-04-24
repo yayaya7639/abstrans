@@ -1,5 +1,6 @@
 from googletrans import Translator
 import semanticscholar as sch
+from deepl import get_translated_text
 
 def print_paper(paper):
     print('doi: ', paper['doi'])
@@ -32,6 +33,7 @@ def print_paper(paper):
 def trans(src):
     if src == None:
         return None
+    return get_translated_text('en', 'ja', src)
     return Translator().translate(src, src="en", dest='ja').text
 
 def doi2info(doi, paper_count=5, citaions = False):
