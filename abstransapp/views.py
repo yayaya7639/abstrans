@@ -96,7 +96,6 @@ def doi2info(doi, paper_count=5, citaions=True):
             'year': paper['year'],
             'arxiv': paper['arxivId']
         })
-        print(make_deepl_request(abst_en))
 
     return papers
 
