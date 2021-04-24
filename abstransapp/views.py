@@ -1,7 +1,8 @@
 from googletrans import Translator
 import semanticscholar as sch
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import urllib
+import time
 
 # Create your views here.
 
@@ -116,18 +117,35 @@ def home(request):
     print("home OK")
     return render(request, 'index.html', {'msg': 'TOP画面です'})
 
+# URLにdoiを入れるための苦肉の策
+def search(request):
+    print("search OK")
 
-def abstrans(request):
+    if request.POST['doi']:
+        doi = request.POST['doi']
+    else:
+        return render(request, 'index.html', {'msg': '指定されたDOI，またはURLが見つかりません'})
+
+    return redirect('abstrans', doi)
+
+def abstrans(request, doi):
     print('abstrans OK')
 
+    # キャッシュで本当に早くなるのか検証
+    start = time.perf_counter()
+
+    """
     doi = '10.1109/cvpr.2016.90'
 
     if request.POST['doi']:
         doi = request.POST['doi']
-
+    """
     papers = doi2info(doi)
 
     if papers == None:
         return render(request, 'index.html', {'msg': '指定されたDOI，またはURLが見つかりません'})
+    
+    end = time.perf_counter()
+    print(f"API処理時間: {end - start:.3f} s.")
 
     return render(request, 'abstrans.html', {'papers': papers})

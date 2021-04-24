@@ -15,7 +15,7 @@
         <hr class="my-4">
 
         <!-- doi検索フォーム　-->
-        <form action="{% url 'abstrans' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+        <form action="{% url 'search' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
             <div class="form-group row">
                 <label for="model" class="col-sm-1 col-form-label">doi</label>
                 <div class="col-sm-3">
@@ -32,8 +32,7 @@
 <!-- responseの表示　-->
 {% for paper in papers %}
 <div class="container-lg">
-    doi: {{ paper.doi }}<br>
-
+    doi: <a href="{% url 'abstrans' paper.doi %}">{{ paper.doi }}</a><br>
     <!-- タイトル　-->
     <span class="sample12">{{ paper.title_en }}</span><br>
     {{ paper.title_ja }}<br>
@@ -59,4 +58,5 @@
     <hr class="my-4">
 </div>
 {% endfor %}
+
 {% endblock content %}
