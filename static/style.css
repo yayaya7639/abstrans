@@ -5,5 +5,13 @@ span.sample12 {
 span.sample11 {
     font-size: large; 
 }
+
+.fixed_btn
+{
+  position: fixed;
+  bottom: 10px; 
+  right: 10px;
+  padding: 6px 40px;
+}
   
   
